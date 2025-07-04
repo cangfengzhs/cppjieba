@@ -6,8 +6,8 @@ using namespace cppjieba;
 
 TEST(JiebaTest, Test0) {
   cppjieba::Jieba jieba;
-  vector<string> words;
-  string result;
+  std::vector<std::string> words;
+  std::string result;
 
   jieba.Cut("他来到了网易杭研大厦", words);
   result << words;
@@ -43,8 +43,8 @@ TEST(JiebaTest, Test1) {
                         DICT_DIR "/user.dict.utf8",
                         DICT_DIR "/idf.utf8",
                         DICT_DIR "/stop_words.utf8");
-  vector<string> words;
-  string result;
+  std::vector<std::string> words;
+  std::string result;
 
   jieba.Cut("他来到了网易杭研大厦", words);
   result << words;
@@ -80,8 +80,8 @@ TEST(JiebaTest, WordTest) {
                         DICT_DIR "/user.dict.utf8",
                         DICT_DIR "/idf.utf8",
                         DICT_DIR "/stop_words.utf8");
-  vector<Word> words;
-  string result;
+  std::vector<Word> words;
+  std::string result;
 
   jieba.Cut("他来到了网易杭研大厦", words);
   result << words;
@@ -122,8 +122,8 @@ TEST(JiebaTest, InsertUserWord) {
                         DICT_DIR "/user.dict.utf8",
                         DICT_DIR "/idf.utf8",
                         DICT_DIR "/stop_words.utf8");
-  vector<string> words;
-  string result;
+  std::vector<std::string> words;
+  std::string result;
 
   jieba.Cut("男默女泪", words);
   result << words;
@@ -136,29 +136,29 @@ TEST(JiebaTest, InsertUserWord) {
   ASSERT_EQ("[\"男默女泪\"]", result);
 
   for (size_t i = 0; i < 100; i++) {
-    string newWord;
+    std::string newWord;
     newWord << rand();
     ASSERT_TRUE(jieba.InsertUserWord(newWord));
     jieba.Cut(newWord, words);
     result << words;
-    ASSERT_EQ(result, StringFormat("[\"%s\"]", newWord.c_str()));
+    ASSERT_EQ(result, limonp::StringFormat("[\"%s\"]", newWord.c_str()));
   }
 
   ASSERT_TRUE(jieba.InsertUserWord("同一个世界，同一个梦想"));
   jieba.Cut("同一个世界，同一个梦想", words);
-  result = Join(words.begin(), words.end(), "/");
+  result = limonp::Join(words.begin(), words.end(), "/");
   ASSERT_EQ(result, "同一个/世界/，/同一个/梦想");
 
   jieba.ResetSeparators("");
 
   jieba.Cut("同一个世界，同一个梦想", words);
-  result = Join(words.begin(), words.end(), "/");
+  result = limonp::Join(words.begin(), words.end(), "/");
   ASSERT_EQ(result, "同一个世界，同一个梦想");
 
   {
-    string s("一部iPhone6");
-    string res;
-    vector<KeywordExtractor::Word> wordweights;
+    std::string s("一部iPhone6");
+    std::string res;
+    std::vector<KeywordExtractor::Word> wordweights;
     size_t topN = 5;
     jieba.extractor.Extract(s, wordweights, topN);
     res << wordweights;

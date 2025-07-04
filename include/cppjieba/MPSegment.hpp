@@ -13,7 +13,7 @@ namespace cppjieba {
 
 class MPSegment: public SegmentTagged {
  public:
-  MPSegment(const string& dictPath, const string& userDictPath = "")
+  MPSegment(const std::string& dictPath, const std::string& userDictPath = "")
     : dictTrie_(new DictTrie(dictPath, userDictPath)), isNeedDestroy_(true) {
   }
   MPSegment(const DictTrie* dictTrie)
@@ -26,23 +26,23 @@ class MPSegment: public SegmentTagged {
     }
   }
 
-  void Cut(const string& sentence, vector<string>& words) const {
+  void Cut(const std::string& sentence, std::vector<std::string>& words) const {
     Cut(sentence, words, MAX_WORD_LENGTH);
   }
 
-  void Cut(const string& sentence,
-        vector<string>& words,
+  void Cut(const std::string& sentence,
+        std::vector<std::string>& words,
         size_t max_word_len) const {
-    vector<Word> tmp;
+    std::vector<Word> tmp;
     Cut(sentence, tmp, max_word_len);
     GetStringsFromWords(tmp, words);
   }
-  void Cut(const string& sentence, 
-        vector<Word>& words, 
+  void Cut(const std::string& sentence, 
+        std::vector<Word>& words, 
         size_t max_word_len = MAX_WORD_LENGTH) const {
     PreFilter pre_filter(symbols_, sentence);
     PreFilter::Range range;
-    vector<WordRange> wrs;
+    std::vector<WordRange> wrs;
     wrs.reserve(sentence.size()/2);
     while (pre_filter.HasNext()) {
       range = pre_filter.Next();
@@ -54,9 +54,9 @@ class MPSegment: public SegmentTagged {
   }
   void Cut(RuneStrArray::const_iterator begin,
            RuneStrArray::const_iterator end,
-           vector<WordRange>& words,
+           std::vector<WordRange>& words,
            size_t max_word_len = MAX_WORD_LENGTH) const {
-    vector<Dag> dags;
+    std::vector<Dag> dags;
     dictTrie_->Find(begin, 
           end, 
           dags,
@@ -69,7 +69,7 @@ class MPSegment: public SegmentTagged {
     return dictTrie_;
   }
 
-  bool Tag(const string& src, vector<pair<string, string> >& res) const {
+  bool Tag(const std::string& src, std::vector<std::pair<std::string, std::string> >& res) const {
     return tagger_.Tag(src, res, *this);
   }
 
@@ -77,16 +77,16 @@ class MPSegment: public SegmentTagged {
     return dictTrie_->IsUserDictSingleChineseWord(value);
   }
  private:
-  void CalcDP(vector<Dag>& dags) const {
+  void CalcDP(std::vector<Dag>& dags) const {
     size_t nextPos;
     const DictUnit* p;
     double val;
 
-    for (vector<Dag>::reverse_iterator rit = dags.rbegin(); rit != dags.rend(); rit++) {
+    for (std::vector<Dag>::reverse_iterator rit = dags.rbegin(); rit != dags.rend(); rit++) {
       rit->pInfo = NULL;
       rit->weight = MIN_DOUBLE;
       assert(!rit->nexts.empty());
-      for (LocalVector<pair<size_t, const DictUnit*> >::const_iterator it = rit->nexts.begin(); it != rit->nexts.end(); it++) {
+      for (limonp::LocalVector<std::pair<size_t, const DictUnit*> >::const_iterator it = rit->nexts.begin(); it != rit->nexts.end(); it++) {
         nextPos = it->first;
         p = it->second;
         val = 0.0;
@@ -108,8 +108,8 @@ class MPSegment: public SegmentTagged {
   }
   void CutByDag(RuneStrArray::const_iterator begin, 
         RuneStrArray::const_iterator end, 
-        const vector<Dag>& dags, 
-        vector<WordRange>& words) const {
+        const std::vector<Dag>& dags, 
+        std::vector<WordRange>& words) const {
     size_t i = 0;
     while (i < dags.size()) {
       const DictUnit* p = dags[i].pInfo;

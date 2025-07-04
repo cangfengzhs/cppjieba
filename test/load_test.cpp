@@ -12,9 +12,9 @@ using namespace cppjieba;
 
 void Cut(size_t times = 50) {
   MixSegment seg(DICT_DIR "/jieba.dict.utf8", DICT_DIR "/hmm_model.utf8");
-  vector<string> res;
-  string doc;
-  ifstream ifs(TEST_DATA_DIR "/weicheng.utf8");
+  std::vector<std::string> res;
+  std::string doc;
+  std::ifstream ifs(TEST_DATA_DIR "/weicheng.utf8");
   assert(ifs);
   doc << ifs;
   long beginTime = clock();
@@ -26,7 +26,7 @@ void Cut(size_t times = 50) {
   }
   printf("\n");
   long endTime = clock();
-  ColorPrintln(GREEN, "Cut: [%.3lf seconds]time consumed.", double(endTime - beginTime)/CLOCKS_PER_SEC);
+  ColorPrintln(limonp::GREEN, "Cut: [%.3lf seconds]time consumed.", double(endTime - beginTime)/CLOCKS_PER_SEC);
 }
 
 void Extract(size_t times = 400) {
@@ -34,9 +34,9 @@ void Extract(size_t times = 400) {
                            DICT_DIR "/hmm_model.utf8", 
                            DICT_DIR "/idf.utf8", 
                            DICT_DIR "/stop_words.utf8");
-  vector<string> words;
-  string doc;
-  ifstream ifs(TEST_DATA_DIR "/review.100");
+  std::vector<std::string> words;
+  std::string doc;
+  std::ifstream ifs(TEST_DATA_DIR "/review.100");
   assert(ifs);
   doc << ifs;
   long beginTime = clock();
@@ -48,7 +48,7 @@ void Extract(size_t times = 400) {
   }
   printf("\n");
   long endTime = clock();
-  ColorPrintln(GREEN, "Extract: [%.3lf seconds]time consumed.", double(endTime - beginTime)/CLOCKS_PER_SEC);
+  ColorPrintln(limonp::GREEN, "Extract: [%.3lf seconds]time consumed.", double(endTime - beginTime)/CLOCKS_PER_SEC);
 }
 
 int main(int argc, char ** argv) {

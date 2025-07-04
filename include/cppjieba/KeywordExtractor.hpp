@@ -45,11 +45,11 @@ class KeywordExtractor {
     }
   }
 
-  void Extract(const std::string& sentence, std::vector<pair<std::string, double> >& keywords, size_t topN) const {
+  void Extract(const std::string& sentence, std::vector<std::pair<std::string, double> >& keywords, size_t topN) const {
     std::vector<Word> topWords;
     Extract(sentence, topWords, topN);
     for (size_t i = 0; i < topWords.size(); i++) {
-      keywords.push_back(pair<std::string, double>(topWords[i].word, topWords[i].weight));
+      keywords.push_back(std::pair<std::string, double>(topWords[i].word, topWords[i].weight));
     }
   }
 
@@ -85,7 +85,7 @@ class KeywordExtractor {
       itr->second.word = itr->first;
       keywords.push_back(itr->second);
     }
-    topN = min(topN, keywords.size());
+    topN = std::min(topN, keywords.size());
     std::partial_sort(keywords.begin(), keywords.begin() + topN, keywords.end(), Compare);
     keywords.resize(topN);
   }

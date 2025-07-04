@@ -10,20 +10,17 @@
 
 namespace cppjieba {
 
-using std::string;
-using std::vector;
-
 typedef uint32_t Rune;
 
 struct Word {
-  string word;
+  std::string word;
   uint32_t offset;
   uint32_t unicode_offset;
   uint32_t unicode_length;
-  Word(const string& w, uint32_t o)
+  Word(const std::string& w, uint32_t o)
    : word(w), offset(o) {
   }
-  Word(const string& w, uint32_t o, uint32_t unicode_offset, uint32_t unicode_length)
+  Word(const std::string& w, uint32_t o, uint32_t unicode_offset, uint32_t unicode_length)
           : word(w), offset(o), unicode_offset(unicode_offset), unicode_length(unicode_length) {
   }
 }; // struct Word
@@ -156,7 +153,7 @@ inline bool DecodeUTF8RunesInString(const char* s, size_t len, RuneStrArray& run
   return true;
 }
 
-inline bool DecodeUTF8RunesInString(const string& s, RuneStrArray& runes) {
+inline bool DecodeUTF8RunesInString(const std::string& s, RuneStrArray& runes) {
   return DecodeUTF8RunesInString(s.c_str(), s.size(), runes);
 }
 
@@ -173,16 +170,16 @@ inline bool DecodeUTF8RunesInString(const char* s, size_t len, Unicode& unicode)
   return true;
 }
 
-inline bool IsSingleWord(const string& str) {
+inline bool IsSingleWord(const std::string& str) {
   RuneStrLite rp = DecodeUTF8ToRune(str.c_str(), str.size());
   return rp.len == str.size();
 }
 
-inline bool DecodeUTF8RunesInString(const string& s, Unicode& unicode) {
+inline bool DecodeUTF8RunesInString(const std::string& s, Unicode& unicode) {
   return DecodeUTF8RunesInString(s.c_str(), s.size(), unicode);
 }
 
-inline Unicode DecodeUTF8RunesInString(const string& s) {
+inline Unicode DecodeUTF8RunesInString(const std::string& s) {
   Unicode result;
   DecodeUTF8RunesInString(s, result);
   return result;
@@ -190,32 +187,32 @@ inline Unicode DecodeUTF8RunesInString(const string& s) {
 
 
 // [left, right]
-inline Word GetWordFromRunes(const string& s, RuneStrArray::const_iterator left, RuneStrArray::const_iterator right) {
+inline Word GetWordFromRunes(const std::string& s, RuneStrArray::const_iterator left, RuneStrArray::const_iterator right) {
   assert(right->offset >= left->offset);
   uint32_t len = right->offset - left->offset + right->len;
   uint32_t unicode_length = right->unicode_offset - left->unicode_offset + right->unicode_length;
   return Word(s.substr(left->offset, len), left->offset, left->unicode_offset, unicode_length);
 }
 
-inline string GetStringFromRunes(const string& s, RuneStrArray::const_iterator left, RuneStrArray::const_iterator right) {
+inline std::string GetStringFromRunes(const std::string& s, RuneStrArray::const_iterator left, RuneStrArray::const_iterator right) {
   assert(right->offset >= left->offset);
   uint32_t len = right->offset - left->offset + right->len;
   return s.substr(left->offset, len);
 }
 
-inline void GetWordsFromWordRanges(const string& s, const vector<WordRange>& wrs, vector<Word>& words) {
+inline void GetWordsFromWordRanges(const std::string& s, const std::vector<WordRange>& wrs, std::vector<Word>& words) {
   for (size_t i = 0; i < wrs.size(); i++) {
     words.push_back(GetWordFromRunes(s, wrs[i].left, wrs[i].right));
   }
 }
 
-inline vector<Word> GetWordsFromWordRanges(const string& s, const vector<WordRange>& wrs) {
-  vector<Word> result;
+inline std::vector<Word> GetWordsFromWordRanges(const std::string& s, const std::vector<WordRange>& wrs) {
+  std::vector<Word> result;
   GetWordsFromWordRanges(s, wrs, result);
   return result;
 }
 
-inline void GetStringsFromWords(const vector<Word>& words, vector<string>& strs) {
+inline void GetStringsFromWords(const std::vector<Word>& words, std::vector<std::string>& strs) {
   strs.resize(words.size());
   for (size_t i = 0; i < words.size(); ++i) {
     strs[i] = words[i].word;

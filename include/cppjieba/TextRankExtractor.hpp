@@ -6,18 +6,17 @@
 
 namespace cppjieba {
   using namespace limonp;
-  using namespace std;
 
   class TextRankExtractor {
   public:
-    typedef struct _Word {string word;vector<size_t> offsets;double weight;}    Word; // struct Word
+    typedef struct _Word {std::string word;std::vector<size_t> offsets;double weight;}    Word; // struct Word
   private:
-    typedef std::map<string,Word> WordMap;
+    typedef std::map<std::string,Word> WordMap;
   
     class WordGraph{
     private:
       typedef double Score;
-      typedef string Node;
+      typedef std::string Node;
       typedef std::set<Node> NodeSet;
 
       typedef std::map<Node,double> Edges;
@@ -86,43 +85,43 @@ namespace cppjieba {
     };
 
   public: 
-  TextRankExtractor(const string& dictPath, 
-        const string& hmmFilePath, 
-        const string& stopWordPath, 
-        const string& userDict = "") 
+  TextRankExtractor(const std::string& dictPath, 
+        const std::string& hmmFilePath, 
+        const std::string& stopWordPath, 
+        const std::string& userDict = "") 
     : segment_(dictPath, hmmFilePath, userDict) {
     LoadStopWordDict(stopWordPath);
   }
   TextRankExtractor(const DictTrie* dictTrie, 
         const HMMModel* model,
-        const string& stopWordPath) 
+        const std::string& stopWordPath) 
     : segment_(dictTrie, model) {
     LoadStopWordDict(stopWordPath);
   }
-    TextRankExtractor(const Jieba& jieba, const string& stopWordPath) : segment_(jieba.GetDictTrie(), jieba.GetHMMModel()) {
+    TextRankExtractor(const Jieba& jieba, const std::string& stopWordPath) : segment_(jieba.GetDictTrie(), jieba.GetHMMModel()) {
         LoadStopWordDict(stopWordPath);
     }
     ~TextRankExtractor() {
     }
 
-    void Extract(const string& sentence, vector<string>& keywords, size_t topN) const {
-      vector<Word> topWords;
+    void Extract(const std::string& sentence, std::vector<std::string>& keywords, size_t topN) const {
+      std::vector<Word> topWords;
       Extract(sentence, topWords, topN);
       for (size_t i = 0; i < topWords.size(); i++) {
         keywords.push_back(topWords[i].word);
       }
     }
 
-    void Extract(const string& sentence, vector<pair<string, double> >& keywords, size_t topN) const {
-      vector<Word> topWords;
+    void Extract(const std::string& sentence, std::vector<pair<std::string, double> >& keywords, size_t topN) const {
+      std::vector<Word> topWords;
       Extract(sentence, topWords, topN);
       for (size_t i = 0; i < topWords.size(); i++) {
-        keywords.push_back(pair<string, double>(topWords[i].word, topWords[i].weight));
+        keywords.push_back(pair<std::string, double>(topWords[i].word, topWords[i].weight));
       }
     }
 
-    void Extract(const string& sentence, vector<Word>& keywords, size_t topN, size_t span=5,size_t rankTime=10) const {
-      vector<string> words;
+    void Extract(const std::string& sentence, std::vector<Word>& keywords, size_t topN, size_t span=5,size_t rankTime=10) const {
+      std::vector<std::string> words;
       segment_.Cut(sentence, words);
 
       TextRankExtractor::WordGraph graph;
@@ -162,10 +161,10 @@ namespace cppjieba {
       keywords.resize(topN);
     }
   private:
-    void LoadStopWordDict(const string& filePath) {
+    void LoadStopWordDict(const std::string& filePath) {
       ifstream ifs(filePath.c_str());
       XCHECK(ifs.is_open()) << "open " << filePath << " failed";
-      string line ;
+      std::string line ;
       while (getline(ifs, line)) {
         stopWords_.insert(line);
       }
@@ -177,7 +176,7 @@ namespace cppjieba {
     }
 
     MixSegment segment_;
-    unordered_set<string> stopWords_;
+    unordered_set<std::string> stopWords_;
   }; // class TextRankExtractor
   
   inline ostream& operator << (ostream& os, const TextRankExtractor::Word& word) {

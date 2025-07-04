@@ -6,8 +6,7 @@
 
 namespace cppjieba {
 
-using namespace limonp;
-typedef unordered_map<Rune, double> EmitProbMap;
+typedef std::unordered_map<Rune, double> EmitProbMap;
 
 struct HMMModel {
   /*
@@ -16,7 +15,7 @@ struct HMMModel {
    * */
   enum {B = 0, E = 1, M = 2, S = 3, STATUS_SUM = 4};
 
-  HMMModel(const string& modelPath) {
+  HMMModel(const std::string& modelPath) {
     memset(startProb, 0, sizeof(startProb));
     memset(transProb, 0, sizeof(transProb));
     statMap[0] = 'B';
@@ -31,15 +30,15 @@ struct HMMModel {
   }
   ~HMMModel() {
   }
-  void LoadModel(const string& filePath) {
-    ifstream ifile(filePath.c_str());
+  void LoadModel(const std::string& filePath) {
+    std::ifstream ifile(filePath.c_str());
     XCHECK(ifile.is_open()) << "open " << filePath << " failed";
-    string line;
-    vector<string> tmp;
-    vector<string> tmp2;
+    std::string line;
+    std::vector<std::string> tmp;
+    std::vector<std::string> tmp2;
     //Load startProb
     XCHECK(GetLine(ifile, line));
-    Split(line, tmp, " ");
+    limonp::Split(line, tmp, " ");
     XCHECK(tmp.size() == STATUS_SUM);
     for (size_t j = 0; j< tmp.size(); j++) {
       startProb[j] = atof(tmp[j].c_str());
@@ -48,7 +47,7 @@ struct HMMModel {
     //Load transProb
     for (size_t i = 0; i < STATUS_SUM; i++) {
       XCHECK(GetLine(ifile, line));
-      Split(line, tmp, " ");
+      limonp::Split(line, tmp, " ");
       XCHECK(tmp.size() == STATUS_SUM);
       for (size_t j =0; j < STATUS_SUM; j++) {
         transProb[i][j] = atof(tmp[j].c_str());
@@ -79,28 +78,28 @@ struct HMMModel {
     }
     return cit->second;
   }
-  bool GetLine(ifstream& ifile, string& line) {
+  bool GetLine(std::ifstream& ifile, std::string& line) {
     while (getline(ifile, line)) {
-      Trim(line);
+      limonp::Trim(line);
       if (line.empty()) {
         continue;
       }
-      if (StartsWith(line, "#")) {
+      if (limonp::StartsWith(line, "#")) {
         continue;
       }
       return true;
     }
     return false;
   }
-  bool LoadEmitProb(const string& line, EmitProbMap& mp) {
+  bool LoadEmitProb(const std::string& line, EmitProbMap& mp) {
     if (line.empty()) {
       return false;
     }
-    vector<string> tmp, tmp2;
+    std::vector<std::string> tmp, tmp2;
     Unicode unicode;
-    Split(line, tmp, ",");
+    limonp::Split(line, tmp, ",");
     for (size_t i = 0; i < tmp.size(); i++) {
-      Split(tmp[i], tmp2, ":");
+      limonp::Split(tmp[i], tmp2, ":");
       if (2 != tmp2.size()) {
         XLOG(ERROR) << "emitProb illegal.";
         return false;
@@ -121,7 +120,7 @@ struct HMMModel {
   EmitProbMap emitProbE;
   EmitProbMap emitProbM;
   EmitProbMap emitProbS;
-  vector<EmitProbMap* > emitProbVec;
+  std::vector<EmitProbMap* > emitProbVec;
 }; // struct HMMModel
 
 } // namespace cppjieba

@@ -10,8 +10,6 @@ namespace cppjieba {
 
 const char* const SPECIAL_SEPARATORS = " \t\n\xEF\xBC\x8C\xE3\x80\x82";
 
-using namespace limonp;
-
 class SegmentBase {
  public:
   SegmentBase() {
@@ -20,9 +18,9 @@ class SegmentBase {
   virtual ~SegmentBase() {
   }
 
-  virtual void Cut(const string& sentence, vector<string>& words) const = 0;
+  virtual void Cut(const std::string& sentence, std::vector<std::string>& words) const = 0;
 
-  bool ResetSeparators(const string& s) {
+  bool ResetSeparators(const std::string& s) {
     symbols_.clear();
     RuneStrArray runes;
     if (!DecodeUTF8RunesInString(s, runes)) {
@@ -38,7 +36,7 @@ class SegmentBase {
     return true;
   }
  protected:
-  unordered_set<Rune> symbols_;
+  std::unordered_set<Rune> symbols_;
 }; // class SegmentBase
 
 } // cppjieba

@@ -12,7 +12,7 @@
 namespace cppjieba {
 class FullSegment: public SegmentBase {
  public:
-  FullSegment(const string& dictPath) {
+  FullSegment(const std::string& dictPath) {
     dictTrie_ = new DictTrie(dictPath);
     isNeedDestroy_ = true;
   }
@@ -25,17 +25,17 @@ class FullSegment: public SegmentBase {
       delete dictTrie_;
     }
   }
-  void Cut(const string& sentence, 
-        vector<string>& words) const {
-    vector<Word> tmp;
+  void Cut(const std::string& sentence, 
+        std::vector<std::string>& words) const {
+    std::vector<Word> tmp;
     Cut(sentence, tmp);
     GetStringsFromWords(tmp, words);
   }
-  void Cut(const string& sentence, 
-        vector<Word>& words) const {
+  void Cut(const std::string& sentence, 
+        std::vector<Word>& words) const {
     PreFilter pre_filter(symbols_, sentence);
     PreFilter::Range range;
-    vector<WordRange> wrs;
+    std::vector<WordRange> wrs;
     wrs.reserve(sentence.size()/2);
     while (pre_filter.HasNext()) {
       range = pre_filter.Next();
@@ -47,9 +47,9 @@ class FullSegment: public SegmentBase {
   }
   void Cut(RuneStrArray::const_iterator begin, 
         RuneStrArray::const_iterator end, 
-        vector<WordRange>& res) const {
+        std::vector<WordRange>& res) const {
     // result of searching in trie tree
-    LocalVector<pair<size_t, const DictUnit*> > tRes;
+    limonp::LocalVector<std::pair<size_t, const DictUnit*> > tRes;
 
     // max index of res's words
     size_t maxIdx = 0;
@@ -60,7 +60,7 @@ class FullSegment: public SegmentBase {
     // tmp variables
     size_t wordLen = 0;
     assert(dictTrie_);
-    vector<struct Dag> dags;
+    std::vector<struct Dag> dags;
     dictTrie_->Find(begin, end, dags);
     for (size_t i = 0; i < dags.size(); i++) {
       for (size_t j = 0; j < dags[i].nexts.size(); j++) {

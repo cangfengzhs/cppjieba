@@ -10,8 +10,8 @@
 namespace cppjieba {
 class MixSegment: public SegmentTagged {
  public:
-  MixSegment(const string& mpSegDict, const string& hmmSegDict, 
-        const string& userDict = "") 
+  MixSegment(const std::string& mpSegDict, const std::string& hmmSegDict, 
+        const std::string& userDict = "") 
     : mpSeg_(mpSegDict, userDict), 
       hmmSeg_(hmmSegDict) {
   }
@@ -21,18 +21,18 @@ class MixSegment: public SegmentTagged {
   ~MixSegment() {
   }
 
-  void Cut(const string& sentence, vector<string>& words) const {
+  void Cut(const std::string& sentence, std::vector<std::string>& words) const {
     Cut(sentence, words, true);
   }
-  void Cut(const string& sentence, vector<string>& words, bool hmm) const {
-    vector<Word> tmp;
+  void Cut(const std::string& sentence, std::vector<std::string>& words, bool hmm) const {
+    std::vector<Word> tmp;
     Cut(sentence, tmp, hmm);
     GetStringsFromWords(tmp, words);
   }
-  void Cut(const string& sentence, vector<Word>& words, bool hmm = true) const {
+  void Cut(const std::string& sentence, std::vector<Word>& words, bool hmm = true) const {
     PreFilter pre_filter(symbols_, sentence);
     PreFilter::Range range;
-    vector<WordRange> wrs;
+    std::vector<WordRange> wrs;
     wrs.reserve(sentence.size() / 2);
     while (pre_filter.HasNext()) {
       range = pre_filter.Next();
@@ -43,17 +43,17 @@ class MixSegment: public SegmentTagged {
     GetWordsFromWordRanges(sentence, wrs, words);
   }
 
-  void Cut(RuneStrArray::const_iterator begin, RuneStrArray::const_iterator end, vector<WordRange>& res, bool hmm) const {
+  void Cut(RuneStrArray::const_iterator begin, RuneStrArray::const_iterator end, std::vector<WordRange>& res, bool hmm) const {
     if (!hmm) {
       mpSeg_.Cut(begin, end, res);
       return;
     }
-    vector<WordRange> words;
+    std::vector<WordRange> words;
     assert(end >= begin);
     words.reserve(end - begin);
     mpSeg_.Cut(begin, end, words);
 
-    vector<WordRange> hmmRes;
+    std::vector<WordRange> hmmRes;
     hmmRes.reserve(end - begin);
     for (size_t i = 0; i < words.size(); i++) {
       //if mp Get a word, it's ok, put it into result
@@ -89,11 +89,11 @@ class MixSegment: public SegmentTagged {
     return mpSeg_.GetDictTrie();
   }
 
-  bool Tag(const string& src, vector<pair<string, string> >& res) const {
+  bool Tag(const std::string& src, std::vector<std::pair<std::string, std::string> >& res) const {
     return tagger_.Tag(src, res, *this);
   }
 
-  string LookupTag(const string &str) const {
+  std::string LookupTag(const std::string &str) const {
     return tagger_.LookupTag(str, *this);
   }
 
