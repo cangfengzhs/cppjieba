@@ -12,7 +12,7 @@ class SegmentTagged : public SegmentBase{
   virtual ~SegmentTagged() {
   }
 
-  virtual bool Tag(const string& src, vector<pair<string, string> >& res) const = 0;
+  virtual bool Tag(const std::string& src, std::vector<pair<std::string, std::string> >& res) const = 0;
 
   virtual const DictTrie* GetDictTrie() const = 0;
 

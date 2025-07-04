@@ -14,7 +14,7 @@
 namespace cppjieba {
 class QuerySegment: public SegmentBase {
  public:
-  QuerySegment(const string& dict, const string& model, const string& userDict = "")
+  QuerySegment(const std::string& dict, const std::string& model, const std::string& userDict = "")
     : mixSeg_(dict, model, userDict),
       trie_(mixSeg_.GetDictTrie()) {
   }
@@ -24,18 +24,18 @@ class QuerySegment: public SegmentBase {
   ~QuerySegment() {
   }
 
-  void Cut(const string& sentence, vector<string>& words) const {
+  void Cut(const std::string& sentence, std::vector<std::string>& words) const {
     Cut(sentence, words, true);
   }
-  void Cut(const string& sentence, vector<string>& words, bool hmm) const {
-    vector<Word> tmp;
+  void Cut(const std::string& sentence, std::vector<std::string>& words, bool hmm) const {
+    std::vector<Word> tmp;
     Cut(sentence, tmp, hmm);
     GetStringsFromWords(tmp, words);
   }
-  void Cut(const string& sentence, vector<Word>& words, bool hmm = true) const {
+  void Cut(const std::string& sentence, std::vector<Word>& words, bool hmm = true) const {
     PreFilter pre_filter(symbols_, sentence);
     PreFilter::Range range;
-    vector<WordRange> wrs;
+    std::vector<WordRange> wrs;
     wrs.reserve(sentence.size()/2);
     while (pre_filter.HasNext()) {
       range = pre_filter.Next();
@@ -45,13 +45,13 @@ class QuerySegment: public SegmentBase {
     words.reserve(wrs.size());
     GetWordsFromWordRanges(sentence, wrs, words);
   }
-  void Cut(RuneStrArray::const_iterator begin, RuneStrArray::const_iterator end, vector<WordRange>& res, bool hmm) const {
+  void Cut(RuneStrArray::const_iterator begin, RuneStrArray::const_iterator end, std::vector<WordRange>& res, bool hmm) const {
     //use mix Cut first
-    vector<WordRange> mixRes;
+    std::vector<WordRange> mixRes;
     mixSeg_.Cut(begin, end, mixRes, hmm);
 
-    vector<WordRange> fullRes;
-    for (vector<WordRange>::const_iterator mixResItr = mixRes.begin(); mixResItr != mixRes.end(); mixResItr++) {
+    std::vector<WordRange> fullRes;
+    for (std::vector<WordRange>::const_iterator mixResItr = mixRes.begin(); mixResItr != mixRes.end(); mixResItr++) {
       if (mixResItr->Length() > 2) {
         for (size_t i = 0; i + 1 < mixResItr->Length(); i++) {
           WordRange wr(mixResItr->left + i, mixResItr->left + i + 1);

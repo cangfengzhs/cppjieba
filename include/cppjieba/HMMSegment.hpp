@@ -11,7 +11,7 @@
 namespace cppjieba {
 class HMMSegment: public SegmentBase {
  public:
-  HMMSegment(const string& filePath)
+  HMMSegment(const std::string& filePath)
   : model_(new HMMModel(filePath)), isNeedDestroy_(true) {
   }
   HMMSegment(const HMMModel* model) 
@@ -23,17 +23,17 @@ class HMMSegment: public SegmentBase {
     }
   }
 
-  void Cut(const string& sentence, 
-        vector<string>& words) const {
-    vector<Word> tmp;
+  void Cut(const std::string& sentence, 
+        std::vector<std::string>& words) const {
+    std::vector<Word> tmp;
     Cut(sentence, tmp);
     GetStringsFromWords(tmp, words);
   }
-  void Cut(const string& sentence, 
-        vector<Word>& words) const {
+  void Cut(const std::string& sentence, 
+        std::vector<Word>& words) const {
     PreFilter pre_filter(symbols_, sentence);
     PreFilter::Range range;
-    vector<WordRange> wrs;
+    std::vector<WordRange> wrs;
     wrs.reserve(sentence.size()/2);
     while (pre_filter.HasNext()) {
       range = pre_filter.Next();
@@ -43,7 +43,7 @@ class HMMSegment: public SegmentBase {
     words.reserve(wrs.size());
     GetWordsFromWordRanges(sentence, wrs, words);
   }
-  void Cut(RuneStrArray::const_iterator begin, RuneStrArray::const_iterator end, vector<WordRange>& res) const {
+  void Cut(RuneStrArray::const_iterator begin, RuneStrArray::const_iterator end, std::vector<WordRange>& res) const {
     RuneStrArray::const_iterator left = begin;
     RuneStrArray::const_iterator right = begin;
     while (right != end) {
@@ -111,8 +111,8 @@ class HMMSegment: public SegmentBase {
     }
     return begin;
   }
-  void InternalCut(RuneStrArray::const_iterator begin, RuneStrArray::const_iterator end, vector<WordRange>& res) const {
-    vector<size_t> status;
+  void InternalCut(RuneStrArray::const_iterator begin, RuneStrArray::const_iterator end, std::vector<WordRange>& res) const {
+    std::vector<size_t> status;
     Viterbi(begin, end, status);
 
     RuneStrArray::const_iterator left = begin;
@@ -129,7 +129,7 @@ class HMMSegment: public SegmentBase {
 
   void Viterbi(RuneStrArray::const_iterator begin, 
         RuneStrArray::const_iterator end, 
-        vector<size_t>& status) const {
+        std::vector<size_t>& status) const {
     size_t Y = HMMModel::STATUS_SUM;
     size_t X = end - begin;
 
@@ -137,8 +137,8 @@ class HMMSegment: public SegmentBase {
     size_t now, old, stat;
     double tmp, endE, endS;
 
-    vector<int> path(XYSize);
-    vector<double> weight(XYSize);
+    std::vector<int> path(XYSize);
+    std::vector<double> weight(XYSize);
 
     //start
     for (size_t y = 0; y < Y; y++) {

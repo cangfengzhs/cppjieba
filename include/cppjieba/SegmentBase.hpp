@@ -20,9 +20,9 @@ class SegmentBase {
   virtual ~SegmentBase() {
   }
 
-  virtual void Cut(const string& sentence, vector<string>& words) const = 0;
+  virtual void Cut(const std::string& sentence, std::vector<std::string>& words) const = 0;
 
-  bool ResetSeparators(const string& s) {
+  bool ResetSeparators(const std::string& s) {
     symbols_.clear();
     RuneStrArray runes;
     if (!DecodeUTF8RunesInString(s, runes)) {

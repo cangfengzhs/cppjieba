@@ -19,17 +19,17 @@ class PosTagger {
   ~PosTagger() {
   }
 
-  bool Tag(const string& src, vector<pair<string, string> >& res, const SegmentTagged& segment) const {
-    vector<string> CutRes;
+  bool Tag(const std::string& src, std::vector<pair<std::string, std::string> >& res, const SegmentTagged& segment) const {
+    std::vector<std::string> CutRes;
     segment.Cut(src, CutRes);
 
-    for (vector<string>::iterator itr = CutRes.begin(); itr != CutRes.end(); ++itr) {
+    for (std::vector<std::string>::iterator itr = CutRes.begin(); itr != CutRes.end(); ++itr) {
       res.push_back(make_pair(*itr, LookupTag(*itr, segment)));
     }
     return !res.empty();
   }
 
-  string LookupTag(const string &str, const SegmentTagged& segment) const {
+  std::string LookupTag(const std::string &str, const SegmentTagged& segment) const {
     const DictUnit *tmp = NULL;
     RuneStrArray runes;
     const DictTrie * dict = segment.GetDictTrie();

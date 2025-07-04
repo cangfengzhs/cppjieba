@@ -8,19 +8,17 @@
 
 namespace cppjieba {
 
-using namespace std;
-
 const size_t MAX_WORD_LENGTH = 512;
 
 struct DictUnit {
   Unicode word;
   double weight;
-  string tag;
+  std::string tag;
 }; // struct DictUnit
 
 // for debugging
 // inline ostream & operator << (ostream& os, const DictUnit& unit) {
-//   string s;
+//   std::string s;
 //   s << unit.word;
 //   return os << StringFormat("%s %s %.3lf", s.c_str(), unit.tag.c_str(), unit.weight);
 // }
@@ -28,7 +26,7 @@ struct DictUnit {
 struct Dag {
   RuneStr runestr;
   // [offset, nexts.first]
-  limonp::LocalVector<pair<size_t, const DictUnit*> > nexts;
+  limonp::LocalVector<std::pair<size_t, const DictUnit*> > nexts;
   const DictUnit * pInfo;
   double weight;
   size_t nextPos; // TODO
@@ -43,14 +41,14 @@ class TrieNode {
   TrieNode(): next(NULL), ptValue(NULL) {
   }
  public:
-  typedef unordered_map<TrieKey, TrieNode*> NextMap;
+  typedef std::unordered_map<TrieKey, TrieNode*> NextMap;
   NextMap *next;
   const DictUnit *ptValue;
 };
 
 class Trie {
  public:
-  Trie(const vector<Unicode>& keys, const vector<const DictUnit*>& valuePointers)
+  Trie(const std::vector<Unicode>& keys, const std::vector<const DictUnit*>& valuePointers)
    : root_(new TrieNode) {
     CreateTrie(keys, valuePointers);
   }
@@ -80,7 +78,7 @@ class Trie {
 
   void Find(RuneStrArray::const_iterator begin, 
         RuneStrArray::const_iterator end, 
-        vector<struct Dag>&res, 
+        std::vector<struct Dag>&res, 
         size_t max_word_len = MAX_WORD_LENGTH) const {
     assert(root_ != NULL);
     res.resize(end - begin);
@@ -96,9 +94,9 @@ class Trie {
         ptNode = NULL;
       }
       if (ptNode != NULL) {
-        res[i].nexts.push_back(pair<size_t, const DictUnit*>(i, ptNode->ptValue));
+        res[i].nexts.push_back(std::pair<size_t, const DictUnit*>(i, ptNode->ptValue));
       } else {
-        res[i].nexts.push_back(pair<size_t, const DictUnit*>(i, static_cast<const DictUnit*>(NULL)));
+        res[i].nexts.push_back(std::pair<size_t, const DictUnit*>(i, static_cast<const DictUnit*>(NULL)));
       }
 
       for (size_t j = i + 1; j < size_t(end - begin) && (j - i + 1) <= max_word_len; j++) {
@@ -111,7 +109,7 @@ class Trie {
         }
         ptNode = citer->second;
         if (NULL != ptNode->ptValue) {
-          res[i].nexts.push_back(pair<size_t, const DictUnit*>(j, ptNode->ptValue));
+          res[i].nexts.push_back(std::pair<size_t, const DictUnit*>(j, ptNode->ptValue));
         }
       }
     }
@@ -132,7 +130,7 @@ class Trie {
       if (ptNode->next->end() == kmIter) {
         TrieNode *nextNode = new TrieNode;
 
-        ptNode->next->insert(make_pair(*citer, nextNode));
+        ptNode->next->insert(std::make_pair(*citer, nextNode));
         ptNode = nextNode;
       } else {
         ptNode = kmIter->second;
@@ -169,7 +167,7 @@ class Trie {
       return;
  }
  private:
-  void CreateTrie(const vector<Unicode>& keys, const vector<const DictUnit*>& valuePointers) {
+  void CreateTrie(const std::vector<Unicode>& keys, const std::vector<const DictUnit*>& valuePointers) {
     if (valuePointers.empty() || keys.empty()) {
       return;
     }

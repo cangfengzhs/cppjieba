@@ -16,7 +16,7 @@ struct HMMModel {
    * */
   enum {B = 0, E = 1, M = 2, S = 3, STATUS_SUM = 4};
 
-  HMMModel(const string& modelPath) {
+  HMMModel(const std::string& modelPath) {
     memset(startProb, 0, sizeof(startProb));
     memset(transProb, 0, sizeof(transProb));
     statMap[0] = 'B';
@@ -31,12 +31,12 @@ struct HMMModel {
   }
   ~HMMModel() {
   }
-  void LoadModel(const string& filePath) {
+  void LoadModel(const std::string& filePath) {
     ifstream ifile(filePath.c_str());
     XCHECK(ifile.is_open()) << "open " << filePath << " failed";
-    string line;
-    vector<string> tmp;
-    vector<string> tmp2;
+    std::string line;
+    std::vector<std::string> tmp;
+    std::vector<std::string> tmp2;
     //Load startProb
     XCHECK(GetLine(ifile, line));
     Split(line, tmp, " ");
@@ -79,7 +79,7 @@ struct HMMModel {
     }
     return cit->second;
   }
-  bool GetLine(ifstream& ifile, string& line) {
+  bool GetLine(ifstream& ifile, std::string& line) {
     while (getline(ifile, line)) {
       Trim(line);
       if (line.empty()) {
@@ -92,11 +92,11 @@ struct HMMModel {
     }
     return false;
   }
-  bool LoadEmitProb(const string& line, EmitProbMap& mp) {
+  bool LoadEmitProb(const std::string& line, EmitProbMap& mp) {
     if (line.empty()) {
       return false;
     }
-    vector<string> tmp, tmp2;
+    std::vector<std::string> tmp, tmp2;
     Unicode unicode;
     Split(line, tmp, ",");
     for (size_t i = 0; i < tmp.size(); i++) {
@@ -121,7 +121,7 @@ struct HMMModel {
   EmitProbMap emitProbE;
   EmitProbMap emitProbM;
   EmitProbMap emitProbS;
-  vector<EmitProbMap* > emitProbVec;
+  std::vector<EmitProbMap* > emitProbVec;
 }; // struct HMMModel
 
 } // namespace cppjieba
