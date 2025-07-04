@@ -89,7 +89,7 @@ class MixSegment: public SegmentTagged {
     return mpSeg_.GetDictTrie();
   }
 
-  bool Tag(const std::string& src, std::vector<pair<std::string, std::string> >& res) const {
+  bool Tag(const std::string& src, std::vector<std::pair<std::string, std::string> >& res) const {
     return tagger_.Tag(src, res, *this);
   }
 

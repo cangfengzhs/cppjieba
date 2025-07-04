@@ -49,7 +49,7 @@ class FullSegment: public SegmentBase {
         RuneStrArray::const_iterator end, 
         std::vector<WordRange>& res) const {
     // result of searching in trie tree
-    LocalVector<pair<size_t, const DictUnit*> > tRes;
+    limonp::LocalVector<std::pair<size_t, const DictUnit*> > tRes;
 
     // max index of res's words
     size_t maxIdx = 0;

@@ -16,9 +16,9 @@ static const char * const ANS_TEST3 = "[iPhone6:eng, 手机:n, 的:uj, 最大:a,
 TEST(PosTaggerTest, Test) {
   MixSegment tagger(DICT_DIR "/jieba.dict.utf8", DICT_DIR "/hmm_model.utf8");
   {
-    vector<pair<string, string> > res;
+    std::vector<std::pair<std::string, std::string> > res;
     tagger.Tag(QUERY_TEST1, res);
-    string s;
+    std::string s;
     s << res;
     ASSERT_TRUE(s == ANS_TEST1);
   }
@@ -26,16 +26,16 @@ TEST(PosTaggerTest, Test) {
 TEST(PosTagger, TestUserDict) {
   MixSegment tagger(DICT_DIR "/jieba.dict.utf8", DICT_DIR "/hmm_model.utf8", TEST_DATA_DIR "/userdict.utf8");
   {
-    vector<pair<string, string> > res;
+    std::vector<std::pair<std::string, std::string> > res;
     tagger.Tag(QUERY_TEST2, res);
-    string s;
+    std::string s;
     s << res;
     ASSERT_EQ(s, ANS_TEST2);
   }
   {
-    vector<pair<string, string> > res;
+    std::vector<std::pair<std::string, std::string> > res;
     tagger.Tag(QUERY_TEST3, res);
-    string s;
+    std::string s;
     s << res;
     ASSERT_EQ(s, ANS_TEST3);
   }

@@ -69,7 +69,7 @@ class MPSegment: public SegmentTagged {
     return dictTrie_;
   }
 
-  bool Tag(const std::string& src, std::vector<pair<std::string, std::string> >& res) const {
+  bool Tag(const std::string& src, std::vector<std::pair<std::string, std::string> >& res) const {
     return tagger_.Tag(src, res, *this);
   }
 
@@ -86,7 +86,7 @@ class MPSegment: public SegmentTagged {
       rit->pInfo = NULL;
       rit->weight = MIN_DOUBLE;
       assert(!rit->nexts.empty());
-      for (LocalVector<pair<size_t, const DictUnit*> >::const_iterator it = rit->nexts.begin(); it != rit->nexts.end(); it++) {
+      for (limonp::LocalVector<std::pair<size_t, const DictUnit*> >::const_iterator it = rit->nexts.begin(); it != rit->nexts.end(); it++) {
         nextPos = it->first;
         p = it->second;
         val = 0.0;

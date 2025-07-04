@@ -64,7 +64,7 @@ class Jieba {
     mp_seg_.Cut(sentence, words, max_word_len);
   }
   
-  void Tag(const std::string& sentence, std::vector<pair<std::string, std::string> >& words) const {
+  void Tag(const std::string& sentence, std::vector<std::pair<std::string, std::string> >& words) const {
     mix_seg_.Tag(sentence, words);
   }
   std::string LookupTag(const std::string &str) const {
@@ -108,7 +108,7 @@ class Jieba {
     dict_trie_.LoadUserDict(buf);
   }
 
-  void LoadUserDict(const set<std::string>& buf)  {
+  void LoadUserDict(const std::set<std::string>& buf)  {
     dict_trie_.LoadUserDict(buf);
   }
 

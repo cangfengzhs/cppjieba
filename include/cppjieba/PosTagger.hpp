@@ -6,7 +6,6 @@
 #include "DictTrie.hpp"
 
 namespace cppjieba {
-using namespace limonp;
 
 static const char* const POS_M = "m";
 static const char* const POS_ENG = "eng";
@@ -19,7 +18,7 @@ class PosTagger {
   ~PosTagger() {
   }
 
-  bool Tag(const std::string& src, std::vector<pair<std::string, std::string> >& res, const SegmentTagged& segment) const {
+  bool Tag(const std::string& src, std::vector<std::pair<std::string, std::string> >& res, const SegmentTagged& segment) const {
     std::vector<std::string> CutRes;
     segment.Cut(src, CutRes);
 

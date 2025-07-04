@@ -11,26 +11,26 @@ TEST(KeywordExtractorTest, Test1) {
                             DICT_DIR "/stop_words.utf8");
 
   {
-    string s("你好世界世界而且而且");
-    string res;
+    std::string s("你好世界世界而且而且");
+    std::string res;
     size_t topN = 5;
 
     {
-      vector<string> words;
+      std::vector<std::string> words;
       Extractor.Extract(s, words, topN);
       res << words;
       ASSERT_EQ(res, "[\"世界\", \"你好\"]");
     }
 
     {
-      vector<pair<string, double> > words;
+      std::vector<std::pair<std::string, double> > words;
       Extractor.Extract(s, words, topN);
       res << words;
       ASSERT_EQ(res, "[世界:8.73506, 你好:7.95788]");
     }
 
     {
-      vector<KeywordExtractor::Word> words;
+      std::vector<KeywordExtractor::Word> words;
       Extractor.Extract(s, words, topN);
       res << words;
       ASSERT_EQ(res, "[{\"word\": \"\xE4\xB8\x96\xE7\x95\x8C\", \"offset\": [6, 12], \"weight\": 8.73506}, {\"word\": \"\xE4\xBD\xA0\xE5\xA5\xBD\", \"offset\": [0], \"weight\": 7.95788}]");
@@ -38,9 +38,9 @@ TEST(KeywordExtractorTest, Test1) {
   }
 
   {
-    string s("我是拖拉机学院手扶拖拉机专业的。不用多久，我就会升职加薪，当上CEO，走上人生巅峰。");
-    string res;
-    vector<KeywordExtractor::Word> wordweights;
+    std::string s("我是拖拉机学院手扶拖拉机专业的。不用多久，我就会升职加薪，当上CEO，走上人生巅峰。");
+    std::string res;
+    std::vector<KeywordExtractor::Word> wordweights;
     size_t topN = 5;
     Extractor.Extract(s, wordweights, topN);
     res << wordweights;
@@ -48,9 +48,9 @@ TEST(KeywordExtractorTest, Test1) {
   }
 
   {
-    string s("一部iPhone6");
-    string res;
-    vector<KeywordExtractor::Word> wordweights;
+    std::string s("一部iPhone6");
+    std::string res;
+    std::vector<KeywordExtractor::Word> wordweights;
     size_t topN = 5;
     Extractor.Extract(s, wordweights, topN);
     res << wordweights;
@@ -66,9 +66,9 @@ TEST(KeywordExtractorTest, Test2) {
                             TEST_DATA_DIR "/userdict.utf8");
 
   {
-    string s("蓝翔优秀毕业生");
-    string res;
-    vector<KeywordExtractor::Word> wordweights;
+    std::string s("蓝翔优秀毕业生");
+    std::string res;
+    std::vector<KeywordExtractor::Word> wordweights;
     size_t topN = 5;
     Extractor.Extract(s, wordweights, topN);
     res << wordweights;
@@ -76,9 +76,9 @@ TEST(KeywordExtractorTest, Test2) {
   }
 
   {
-    string s("一部iPhone6");
-    string res;
-    vector<KeywordExtractor::Word> wordweights;
+    std::string s("一部iPhone6");
+    std::string res;
+    std::vector<KeywordExtractor::Word> wordweights;
     size_t topN = 5;
     Extractor.Extract(s, wordweights, topN);
     res << wordweights;

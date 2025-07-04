@@ -10,8 +10,6 @@ namespace cppjieba {
 
 const char* const SPECIAL_SEPARATORS = " \t\n\xEF\xBC\x8C\xE3\x80\x82";
 
-using namespace limonp;
-
 class SegmentBase {
  public:
   SegmentBase() {
@@ -38,7 +36,7 @@ class SegmentBase {
     return true;
   }
  protected:
-  unordered_set<Rune> symbols_;
+  std::unordered_set<Rune> symbols_;
 }; // class SegmentBase
 
 } // cppjieba
